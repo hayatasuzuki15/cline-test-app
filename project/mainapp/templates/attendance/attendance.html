@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Attendance Records</h2>
+  <table>
+    <tr>
+      <th>Clock In</th>
+      <th>Clock Out</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+      <td>{{ record.clock_in_time }}</td>
+      <td>{{ record.clock_out_time }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="{% url 'clock_in' %}">Clock In</a>
+  <a href="{% url 'clock_out' %}">Clock Out</a>
+{% endblock %}

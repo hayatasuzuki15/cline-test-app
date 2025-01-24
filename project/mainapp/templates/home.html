@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Welcome to the Attendance App</h2>
+  <ul>
+    <li><a href="{% url 'login' %}">Login</a></li>
+    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+    <li><a href="{% url 'attendance' %}">View Attendance</a></li>
+    <li><a href="{% url 'clock_in' %}">Clock In</a></li>
+    <li><a href="{% url 'clock_out' %}">Clock Out</a></li>
+  </ul>
+{% endblock %}
