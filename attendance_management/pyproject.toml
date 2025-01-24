@@ -1,0 +1,3 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "attendance_management.settings"
+python_files = ["tests/*.py", "tests/**/*.py"]
