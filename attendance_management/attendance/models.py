@@ -14,6 +14,12 @@ class Attendance(models.Model):
         return f"{self.user.username} - {self.date}"
 
     def save(self, *args, **kwargs):
+        # 日付が設定されていない場合、現在の日付を使用
+        if not self.date:
+            self.date = timezone.now().date()
+
+        # 出勤と退勤の時間がある場合、勤務時間を計算
         if self.clock_in and self.clock_out:
             self.work_duration = self.clock_out - self.clock_in
+
         super().save(*args, **kwargs)

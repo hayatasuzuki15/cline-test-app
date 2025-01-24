@@ -5,6 +5,7 @@ from django.contrib import messages
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Attendance
 from .serializers import AttendanceSerializer
 from django.utils import timezone
@@ -38,6 +39,13 @@ def logout_view(request):
 class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_context(self):
+        # シリアライザーにリクエストコンテキストを渡す
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
     def get_queryset(self):
         return Attendance.objects.filter(user=self.request.user)
@@ -45,8 +53,11 @@ class AttendanceViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["POST"])
     def clock_in(self, request):
         user = request.user
+        today = timezone.now().date()
+
+        # 既に今日の出勤レコードがあるかチェック
         existing_attendance = Attendance.objects.filter(
-            user=user, date=timezone.now().date(), clock_out__isnull=True
+            user=user, date=today, clock_out__isnull=True
         ).first()
 
         if existing_attendance:
@@ -54,8 +65,11 @@ class AttendanceViewSet(viewsets.ModelViewSet):
                 {"detail": "既に出勤済みです。"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        attendance = Attendance.objects.create(user=user, clock_in=timezone.now())
-        serializer = self.get_serializer(attendance)
+        # シリアライザーを使用してAttendanceを作成
+        serializer = self.get_serializer(data={})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
         return Response(serializer.data)
 
     @action(detail=False, methods=["POST"])
@@ -63,6 +77,7 @@ class AttendanceViewSet(viewsets.ModelViewSet):
         user = request.user
         today = timezone.now().date()
 
+        # 今日の未退勤のレコードを取得
         attendance = Attendance.objects.filter(
             user=user, date=today, clock_out__isnull=True
         ).first()
@@ -72,8 +87,8 @@ class AttendanceViewSet(viewsets.ModelViewSet):
                 {"detail": "出勤打刻がありません。"}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        attendance.clock_out = timezone.now()
-        attendance.save()
-
+        # シリアライザーを使用してAttendanceを更新
         serializer = self.get_serializer(attendance)
+        serializer.update(attendance, {})
+
         return Response(serializer.data)

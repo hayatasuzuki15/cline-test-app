@@ -23,17 +23,19 @@ document.getElementById('clock-in').addEventListener('click', async () => {
   try {
     const response = await fetch('/api/attendance/clock_in/', {
       method: 'POST',
+      credentials: 'same-origin', // クッキーを含める
       headers: {
         'X-CSRFToken': getCookie('csrftoken'),
         'Content-Type': 'application/json',
       },
     });
 
+    const data = await response.json();
+
     if (response.ok) {
       alert('出勤打刻が完了しました。');
       loadAttendanceRecords();
     } else {
-      const data = await response.json();
       alert(data.detail || '出勤打刻に失敗しました。');
     }
   } catch (error) {
@@ -47,17 +49,19 @@ document.getElementById('clock-out').addEventListener('click', async () => {
   try {
     const response = await fetch('/api/attendance/clock_out/', {
       method: 'POST',
+      credentials: 'same-origin', // クッキーを含める
       headers: {
         'X-CSRFToken': getCookie('csrftoken'),
         'Content-Type': 'application/json',
       },
     });
 
+    const data = await response.json();
+
     if (response.ok) {
       alert('退勤打刻が完了しました。');
       loadAttendanceRecords();
     } else {
-      const data = await response.json();
       alert(data.detail || '退勤打刻に失敗しました。');
     }
   } catch (error) {

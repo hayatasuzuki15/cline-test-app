@@ -10,12 +10,12 @@
 - リアルタイムの出勤・退勤打刻
 - 勤務時間の自動計算
 - 月次勤務記録の表示
-- レスポンシブなユーザーインターフェイス
+- レスポンシブなユーザーインターフェース
 
 ## 技術スタック
 
 - バックエンド: Django
-- フロントエンド: HTML、CSS、JavaScript、Bootstrap
+- フロントエンド: HTML, CSS, JavaScript, Bootstrap
 - データベース: SQLite
 - API: Django REST Framework
 
@@ -23,7 +23,7 @@
 
 - Python 3.8+
 - pip
-- 仮想環境（venv 推奨）
+- 仮想環境 (venv 推奨)
 
 ## インストール手順
 
@@ -85,7 +85,7 @@ python manage.py runserver
 
 ## ライセンス
 
-未定義
+[ライセンス情報を追加]
 
 ## 貢献
 
@@ -94,4 +94,4 @@ python manage.py runserver
 ## 注意事項
 
 - 本番環境では `SECRET_KEY` を必ず変更してください
-- 適切なデータベース（PostgreSQL など）への移行を検討してください
+- 適切なデータベース (PostgreSQL など) への移行を検討してください
