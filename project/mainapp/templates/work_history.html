@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work History</title>
+</head>
+<body>
+    <h2>Your Work History</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Hours Worked</th>
+        </tr>
+        {% for work_hour in work_hours %}
+        <tr>
+            <td>{{ work_hour.date }}</td>
+            <td>{{ work_hour.hours_worked }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
